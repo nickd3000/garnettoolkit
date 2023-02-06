@@ -10,88 +10,109 @@ public class SceneManager {
 
     private Scene activeScene;
     private Scene targetScene;
-    private List<Scene> activeSubScene;
+    private List<Scene> activeSubScenes;
 
     private List<String> subScenePushRequests;
     private List<String> subScenePopRequests;
 
     private Map<String, Scene> scenes;
+    private Context sharedContext;
 
     public SceneManager() {
         scenes = new HashMap<>();
-        activeSubScene = new ArrayList<>();
+        activeSubScenes = new ArrayList<>();
         subScenePushRequests = new ArrayList<>();
         subScenePopRequests = new ArrayList<>();
+        sharedContext = new Context();
+    }
+
+    public Context getSharedContext() {
+        return sharedContext;
+    }
+
+    public void tick(double delta) {
+        update();
+
+        sharedContext.tick(delta);
+
+        // Only tick main scene if there are no active sub scenes.
+        if (activeSubScenes.size() == 0 && activeScene.isInitCalled()) activeScene._tick(delta);
+
+        // Find the last active subscene and tick it.
+        if (activeSubScenes.size() > 0)
+            activeSubScenes.get(activeSubScenes.size() - 1)._tick(delta);
+
+
     }
 
     // called after gamestate ticks so safe to add/remove/change states here.
     public void update() {
 
-        handleStateChange();
+        handleSceneChange();
         handleSubscenePop();
-        handleSubstatePush();
+        handleSubscenePush();
     }
 
-    public void handleStateChange() {
+    public void handleSceneChange() {
         if (targetScene != null) {
-            targetScene._init();
+            //targetScene._init();
+
+            if (activeScene != targetScene) {
+                targetScene.onMakeActive();
+                if (activeScene != null) activeScene.onMakeInactive();
+            }
+
             activeScene = targetScene;
             targetScene = null;
         }
     }
 
-    public void handleSubstatePush() {
-        for (String substateName : subScenePushRequests) {
+    public void handleSubscenePush() {
+        if (subScenePushRequests.isEmpty()) return;
 
-            Scene state = scenes.get(substateName);
-            state._init();
-            if (state == null) {
-                System.out.println("Substate not found: " + substateName);
+        for (String subsceneName : subScenePushRequests) {
+
+            Scene scene = scenes.get(subsceneName);
+            //scene._init();
+            if (scene == null) {
+                System.out.println("Subscene not found: " + subsceneName);
                 return;
             }
-            activeSubScene.add(state);
+            scene.onMakeActive();
+            activeSubScenes.add(scene);
         }
 
         subScenePushRequests.clear();
     }
 
     public void handleSubscenePop() {
-        List<Scene> newActiveSubStates = new ArrayList<>();
-        boolean substateRemoved = false;
-        for (Scene activeSubState : activeSubScene) {
+        if (subScenePopRequests.isEmpty()) return;
+
+        List<Scene> newActiveSubScenes = new ArrayList<>();
+
+        for (Scene activeSubScene : activeSubScenes) {
             boolean skip = false;
-            for (String subStatePopRequest : subScenePopRequests) {
-                if (activeSubState.getName().equalsIgnoreCase(subStatePopRequest)) {
+            for (String subScenePopRequest : subScenePopRequests) {
+                if (activeSubScene.getName().equalsIgnoreCase(subScenePopRequest)) {
                     skip = true;
-                    substateRemoved = true;
                     System.out.println("remove");
+                    activeSubScene.onMakeInactive();
                 }
             }
 
             if (!skip) {
-                newActiveSubStates.add(activeSubState);
+                newActiveSubScenes.add(activeSubScene);
             }
         }
         subScenePopRequests.clear();
-        activeSubScene = newActiveSubStates;
-        if (substateRemoved) {
-            //garnet.getInput().postStateChangeTask();
-        }
-    }
+        activeSubScenes = newActiveSubScenes;
 
-    public void tick(double delta) {
-        // Only tick main state if there are no active sub states.
-        if (activeSubScene.size() == 0) activeScene._tick(delta);
-
-        // Find the last active substate and tick it.
-        if (activeSubScene.size() > 0)
-            activeSubScene.get(activeSubScene.size() - 1)._tick(delta);
     }
 
     public void draw() {
-        if (activeScene != null) activeScene._draw();
-        for (Scene activeSubState : activeSubScene) {
-            activeSubState._draw();
+        if (activeScene != null && activeScene.isInitCalled()) activeScene._draw();
+        for (Scene activeSubScene : activeSubScenes) {
+            activeSubScene._draw();
         }
     }
 
@@ -99,29 +120,52 @@ public class SceneManager {
         return Optional.ofNullable(activeScene);
     }
 
-    public void addScene(Scene scene) {
-        if (targetScene == null) targetScene = scene;
-        scenes.put(scene.getName(), scene);
-        scene.setSceneManager(this);
-        if (activeScene == null) activeScene = scene;
-    }
+    /**
+     * Request active scene change.
+     *
+     * @param name
+     */
+    public void setActiveScene(String name) {
+        exceptionIfSceneNameNotFound(name);
 
-    public void switchActiveState(String name) {
-        for (String state : scenes.keySet()) {
-            if (state.equalsIgnoreCase(name)) {
+        for (String scene : scenes.keySet()) {
+            if (scene.equalsIgnoreCase(name)) {
                 targetScene = scenes.get(name);
             }
         }
-        // TODO: exception if not found?
+
     }
 
+    public void exceptionIfSceneNameNotFound(String name) {
+        for (String str : scenes.keySet()) {
+            if (str.equalsIgnoreCase(name)) return;
+        }
+        throw new RuntimeException("Unknown Scene name " + name + ".");
+    }
+
+    /**
+     * Add a scene but do not make active.
+     *
+     * @param scene
+     */
+    public void addScene(Scene scene) {
+        if (activeScene == null) targetScene = scene;
+        scenes.put(scene.getName(), scene);
+        scene.setSceneManager(this);
+    }
+
+    /**
+     * Push an already added scene to the active subscene list.
+     *
+     * @param name
+     */
     public void pushSubScene(String name) {
         subScenePushRequests.add(name);
-
-
     }
 
     public void popSubScene(String name) {
         subScenePopRequests.add(name);
+
+        exceptionIfSceneNameNotFound(name);
     }
 }

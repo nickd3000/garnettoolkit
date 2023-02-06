@@ -4,6 +4,7 @@ public abstract class Scene {
 
     SceneManager sceneManager;
     String name;
+    private boolean initCalled = false;
 
     public Scene(String name) {
         this.name = name;
@@ -23,6 +24,7 @@ public abstract class Scene {
 
     public void _init() {
         init();
+        initCalled = true;
     }
 
     public abstract void init();
@@ -39,5 +41,11 @@ public abstract class Scene {
 
     public abstract void draw();
 
+    public abstract void onMakeActive();
 
+    public abstract void onMakeInactive();
+
+    public boolean isInitCalled() {
+        return initCalled;
+    }
 }
