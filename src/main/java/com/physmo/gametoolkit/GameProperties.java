@@ -34,19 +34,10 @@ public class GameProperties {
     }
 
     public Object getProperty(String key) {
-//        if (!properties.containsKey(key)) {
-//            String name = (String) properties.get(EProp.NAME);
-//            throw new RuntimeException("Property not found: " + key + " in " + name);
-//        }
         return properties.get(key);
     }
 
     public double getPropertyDouble(String key) {
-//        if (!properties.containsKey(key)) {
-//            String name = (String) properties.get(EProp.NAME);
-//            throw new RuntimeException("Property not found: " + key + " in " + name);
-//        }
-
         return (double) properties.get(key);
     }
 
@@ -54,4 +45,14 @@ public class GameProperties {
         properties.put(key, value);
     }
 
+    @Override
+    public String toString() {
+        String str = "GameProperties{"+System.lineSeparator();
+        for (String key : properties.keySet()) {
+            str += "- "+key +":"+properties.get(key)+System.lineSeparator();
+        }
+        str+="}";
+
+        return str;
+    }
 }

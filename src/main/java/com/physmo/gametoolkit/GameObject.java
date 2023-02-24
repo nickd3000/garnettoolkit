@@ -3,6 +3,10 @@ package com.physmo.gametoolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    An object that can be added to a Context and ticked.
+    Contains a list of components and properties.
+ */
 public abstract class GameObject {
 
     protected final List<Component> components = new ArrayList<>();

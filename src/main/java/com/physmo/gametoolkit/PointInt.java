@@ -31,6 +31,6 @@ public class PointInt {
     }
 
     public String toString() {
-        return "[" + x + "," + y + "]";
+        return "[" + x + "," + y + "," + z +"]";
     }
 }

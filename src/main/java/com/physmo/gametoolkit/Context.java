@@ -3,31 +3,42 @@ package com.physmo.gametoolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Managing class for objects with special handling for GameObjects.
+ */
 public class Context {
+    // TODO: we need to handle lists of objects of the same type.
+    // TODO: add tag handling
 
-    List<GameObject> gameObjects = new ArrayList<>();
+    List<Object> objects = new ArrayList<>();
 
-    public void add(GameObject gameObject) {
-        gameObject.injectContext(this);
-        gameObjects.add(gameObject);
+    public void add(Object object) {
+        if (object instanceof GameObject) {
+            ((GameObject)object).injectContext(this);
+        }
+        objects.add(object);
     }
 
     public <T> T getObjectByType(Class<T> clazz) {
-        for (Object gameObject : gameObjects) {
-            if (gameObject.getClass() == clazz) return (T) gameObject;
+        for (Object object : objects) {
+            if (object.getClass() == clazz) return (T) object;
         }
         return null;
     }
 
     public void init() {
-        for (GameObject gameObject : gameObjects) {
-            gameObject._init();
+        for (Object object : objects) {
+            if (object instanceof GameObject) {
+                ((GameObject)object)._init();
+            }
         }
     }
 
     public void tick(double t) {
-        for (GameObject gameObject : gameObjects) {
-            gameObject._tick(t);
+        for (Object object : objects) {
+            if (object instanceof GameObject) {
+                ((GameObject)object)._tick(t);
+            }
         }
     }
 }

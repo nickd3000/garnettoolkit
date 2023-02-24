@@ -1,9 +1,13 @@
 package com.physmo.gametoolkit;
 
+/**
+ * A scene can be thought of as a game state
+ *
+ */
 public abstract class Scene {
 
-    SceneManager sceneManager;
-    String name;
+    private SceneManager sceneManager;
+    private String name;
     private boolean initCalled = false;
 
     public Scene(String name) {
