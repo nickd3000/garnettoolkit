@@ -1,4 +1,4 @@
-import com.physmo.gametoolkit.PointInt;
+import com.physmo.garnettoolkit.PointInt;
 import org.junit.jupiter.api.Test;
 
 public class PointIntTest {

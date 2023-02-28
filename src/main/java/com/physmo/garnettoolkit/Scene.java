@@ -1,11 +1,11 @@
-package com.physmo.gametoolkit;
+package com.physmo.garnettoolkit;
 
 /**
  * A scene can be thought of as a game state
- *
  */
 public abstract class Scene {
 
+    protected Context context = new Context();
     private SceneManager sceneManager;
     private String name;
     private boolean initCalled = false;
@@ -34,12 +34,14 @@ public abstract class Scene {
     public abstract void init();
 
     public void _tick(double delta) {
+        context.tick(delta);
         tick(delta);
     }
 
     public abstract void tick(double delta);
 
     public void _draw() {
+        context.draw();
         draw();
     }
 

@@ -1,4 +1,4 @@
-package com.physmo.gametoolkit;
+package com.physmo.garnettoolkit;
 
 // Position needs to be able to handle locations and floors as well as inside/outside.
 public class PointInt {
@@ -31,6 +31,6 @@ public class PointInt {
     }
 
     public String toString() {
-        return "[" + x + "," + y + "," + z +"]";
+        return "[" + x + "," + y + "," + z + "]";
     }
 }

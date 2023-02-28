@@ -1,10 +1,14 @@
 package support;
 
-import com.physmo.gametoolkit.GameObject;
+import com.physmo.garnettoolkit.GameObject;
 
 public class SoundEngine extends GameObject {
 
     int tickCount = 0;
+
+    public SoundEngine(String name) {
+        super(name);
+    }
 
     public int getTickCount() {
         return tickCount;

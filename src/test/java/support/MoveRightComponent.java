@@ -1,6 +1,6 @@
 package support;
 
-import com.physmo.gametoolkit.Component;
+import com.physmo.garnettoolkit.Component;
 
 public class MoveRightComponent extends Component {
     @Override

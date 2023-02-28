@@ -1,4 +1,4 @@
-package com.physmo.gametoolkit;
+package com.physmo.garnettoolkit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,27 +6,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+// TODO: make this a singleton
 public class SceneManager {
 
+    private static Context sharedContext = null;
     private Scene activeScene;
     private Scene targetScene;
     private List<Scene> activeSubScenes;
-
     private List<String> subScenePushRequests;
     private List<String> subScenePopRequests;
-
     private Map<String, Scene> scenes;
-    private Context sharedContext;
 
     public SceneManager() {
         scenes = new HashMap<>();
         activeSubScenes = new ArrayList<>();
         subScenePushRequests = new ArrayList<>();
         subScenePopRequests = new ArrayList<>();
-        sharedContext = new Context();
     }
 
-    public Context getSharedContext() {
+    public static Context getSharedContext() {
+        if (sharedContext == null) {
+            sharedContext = new Context();
+        }
+
         return sharedContext;
     }
 
@@ -55,7 +57,7 @@ public class SceneManager {
 
     public void handleSceneChange() {
         if (targetScene != null) {
-            //targetScene._init();
+            targetScene._init();
 
             if (activeScene != targetScene) {
                 targetScene.onMakeActive();
@@ -110,7 +112,10 @@ public class SceneManager {
     }
 
     public void draw() {
-        if (activeScene != null && activeScene.isInitCalled()) activeScene._draw();
+        if (activeScene != null && activeScene.isInitCalled()) {
+            activeScene._draw();
+        }
+
         for (Scene activeSubScene : activeSubScenes) {
             activeSubScene._draw();
         }
@@ -131,9 +136,12 @@ public class SceneManager {
         for (String scene : scenes.keySet()) {
             if (scene.equalsIgnoreCase(name)) {
                 targetScene = scenes.get(name);
+                System.out.println("Switching scene to " + name);
+                return;
             }
         }
 
+        System.out.println("Scene name not found: " + name);
     }
 
     public void exceptionIfSceneNameNotFound(String name) {
@@ -149,6 +157,7 @@ public class SceneManager {
      * @param scene
      */
     public void addScene(Scene scene) {
+        System.out.println("Adding scene");
         if (activeScene == null) targetScene = scene;
         scenes.put(scene.getName(), scene);
         scene.setSceneManager(this);

@@ -1,4 +1,4 @@
-package com.physmo.gametoolkit;
+package com.physmo.garnettoolkit;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-import com.physmo.gametoolkit.SceneManager;
+import com.physmo.garnettoolkit.SceneManager;
 import org.junit.jupiter.api.Test;
 import support.InventorySubScene;
 import support.MainGameScene;
@@ -43,12 +43,12 @@ public class SceneManagerTest {
 
         sceneManager.setActiveScene("Main Game");
 
-        for (int i=0;i<3;i++) {
+        for (int i = 0; i < 3; i++) {
             sceneManager.tick(1);
         }
 
         sceneManager.pushSubScene("Inventory");
-        for (int i=0;i<5;i++) {
+        for (int i = 0; i < 5; i++) {
             sceneManager.tick(1);
         }
 

@@ -1,4 +1,4 @@
-import com.physmo.gametoolkit.Context;
+import com.physmo.garnettoolkit.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import support.Monster;
@@ -25,7 +25,7 @@ public class ContextTest {
     @Test
     public void testGetObjectByType() {
         Context context = new Context();
-        context.add(new SoundEngine());
+        context.add(new SoundEngine("sound engine"));
         context.init();
         context.tick(1);
 

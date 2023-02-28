@@ -1,6 +1,6 @@
 package support;
 
-import com.physmo.gametoolkit.Scene;
+import com.physmo.garnettoolkit.Scene;
 
 import java.util.List;
 
@@ -24,10 +24,10 @@ public class InventorySubScene extends Scene {
 
     @Override
     public void tick(double delta) {
-        messageList.add("InventorySubScene tick "+tickCount);
+        messageList.add("InventorySubScene tick " + tickCount);
         tickCount++;
-        if (tickCount==3) {
-            messageList.add("InventorySubScene requesting pop, name: "+this.getName());
+        if (tickCount == 3) {
+            messageList.add("InventorySubScene requesting pop, name: " + this.getName());
             getSceneManager().popSubScene(this.getName());
         }
     }

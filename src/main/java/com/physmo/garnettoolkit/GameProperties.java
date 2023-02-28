@@ -1,4 +1,4 @@
-package com.physmo.gametoolkit;
+package com.physmo.garnettoolkit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,11 +47,11 @@ public class GameProperties {
 
     @Override
     public String toString() {
-        String str = "GameProperties{"+System.lineSeparator();
+        String str = "GameProperties{" + System.lineSeparator();
         for (String key : properties.keySet()) {
-            str += "- "+key +":"+properties.get(key)+System.lineSeparator();
+            str += "- " + key + ":" + properties.get(key) + System.lineSeparator();
         }
-        str+="}";
+        str += "}";
 
         return str;
     }
