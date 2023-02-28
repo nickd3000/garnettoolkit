@@ -14,13 +14,13 @@ public abstract class Scene {
         this.name = name;
     }
 
-    public SceneManager getSceneManager() {
-        return sceneManager;
-    }
+    //public SceneManager getSceneManager() {
+//        return sceneManager;
+//    }
 
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
-    }
+    //public void setSceneManager(SceneManager sceneManager) {
+//        this.sceneManager = sceneManager;
+//    }
 
     public String getName() {
         return name;

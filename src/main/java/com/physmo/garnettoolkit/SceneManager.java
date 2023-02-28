@@ -10,12 +10,12 @@ import java.util.Optional;
 public class SceneManager {
 
     private static Context sharedContext = null;
-    private Scene activeScene;
-    private Scene targetScene;
-    private List<Scene> activeSubScenes;
-    private List<String> subScenePushRequests;
-    private List<String> subScenePopRequests;
-    private Map<String, Scene> scenes;
+    private static Scene activeScene;
+    private static Scene targetScene;
+    private static List<Scene> activeSubScenes;
+    private static List<String> subScenePushRequests;
+    private static List<String> subScenePopRequests;
+    private static Map<String, Scene> scenes;
 
     public SceneManager() {
         scenes = new HashMap<>();
@@ -32,7 +32,7 @@ public class SceneManager {
         return sharedContext;
     }
 
-    public void tick(double delta) {
+    public static void tick(double delta) {
         update();
 
         sharedContext.tick(delta);
@@ -48,14 +48,14 @@ public class SceneManager {
     }
 
     // called after gamestate ticks so safe to add/remove/change states here.
-    public void update() {
+    public static void update() {
 
         handleSceneChange();
         handleSubscenePop();
         handleSubscenePush();
     }
 
-    public void handleSceneChange() {
+    public static void handleSceneChange() {
         if (targetScene != null) {
             targetScene._init();
 
@@ -69,7 +69,7 @@ public class SceneManager {
         }
     }
 
-    public void handleSubscenePush() {
+    public static void handleSubscenePush() {
         if (subScenePushRequests.isEmpty()) return;
 
         for (String subsceneName : subScenePushRequests) {
@@ -87,7 +87,7 @@ public class SceneManager {
         subScenePushRequests.clear();
     }
 
-    public void handleSubscenePop() {
+    public static void handleSubscenePop() {
         if (subScenePopRequests.isEmpty()) return;
 
         List<Scene> newActiveSubScenes = new ArrayList<>();
@@ -111,7 +111,7 @@ public class SceneManager {
 
     }
 
-    public void draw() {
+    public static void draw() {
         if (activeScene != null && activeScene.isInitCalled()) {
             activeScene._draw();
         }
@@ -121,7 +121,7 @@ public class SceneManager {
         }
     }
 
-    public Optional<Scene> getActiveScene() {
+    public static Optional<Scene> getActiveScene() {
         return Optional.ofNullable(activeScene);
     }
 
@@ -130,7 +130,7 @@ public class SceneManager {
      *
      * @param name
      */
-    public void setActiveScene(String name) {
+    public static void setActiveScene(String name) {
         exceptionIfSceneNameNotFound(name);
 
         for (String scene : scenes.keySet()) {
@@ -144,7 +144,7 @@ public class SceneManager {
         System.out.println("Scene name not found: " + name);
     }
 
-    public void exceptionIfSceneNameNotFound(String name) {
+    public static void exceptionIfSceneNameNotFound(String name) {
         for (String str : scenes.keySet()) {
             if (str.equalsIgnoreCase(name)) return;
         }
@@ -156,11 +156,11 @@ public class SceneManager {
      *
      * @param scene
      */
-    public void addScene(Scene scene) {
+    public static void addScene(Scene scene) {
         System.out.println("Adding scene");
         if (activeScene == null) targetScene = scene;
         scenes.put(scene.getName(), scene);
-        scene.setSceneManager(this);
+        //scene.setSceneManager(this);
     }
 
     /**
@@ -168,11 +168,11 @@ public class SceneManager {
      *
      * @param name
      */
-    public void pushSubScene(String name) {
+    public static void pushSubScene(String name) {
         subScenePushRequests.add(name);
     }
 
-    public void popSubScene(String name) {
+    public static void popSubScene(String name) {
         subScenePopRequests.add(name);
 
         exceptionIfSceneNameNotFound(name);
