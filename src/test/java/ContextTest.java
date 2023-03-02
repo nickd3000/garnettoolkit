@@ -11,7 +11,7 @@ public class ContextTest {
     public void basicTest() {
         Context context = new Context();
 
-        Monster monster = new Monster();
+        Monster monster = new Monster("");
         MoveRightComponent moveRight = new MoveRightComponent();
         monster.addComponent(moveRight);
 

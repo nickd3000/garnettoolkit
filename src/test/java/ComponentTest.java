@@ -9,7 +9,7 @@ public class ComponentTest {
 
     @Test
     public void TestAccessingSiblingComponentsWithinGameObject() {
-        Monster monster = new Monster();
+        Monster monster = new Monster("monster");
         monster.addComponent(new MonsterLogicComponent());
         monster.addComponent(new MoveRightComponent());
         monster.addComponent(new InventoryComponent());

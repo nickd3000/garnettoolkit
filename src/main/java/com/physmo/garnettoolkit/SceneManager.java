@@ -9,19 +9,24 @@ import java.util.Optional;
 // TODO: make this a singleton
 public class SceneManager {
 
+    private static final List<String> subScenePushRequests;
+    private static final List<String> subScenePopRequests;
+    private static final Map<String, Scene> scenes;
     private static Context sharedContext = null;
     private static Scene activeScene;
     private static Scene targetScene;
     private static List<Scene> activeSubScenes;
-    private static List<String> subScenePushRequests;
-    private static List<String> subScenePopRequests;
-    private static Map<String, Scene> scenes;
 
-    public SceneManager() {
+    static {
         scenes = new HashMap<>();
         activeSubScenes = new ArrayList<>();
         subScenePushRequests = new ArrayList<>();
         subScenePopRequests = new ArrayList<>();
+        sharedContext = new Context();
+    }
+
+    private SceneManager() {
+
     }
 
     public static Context getSharedContext() {
@@ -44,10 +49,9 @@ public class SceneManager {
         if (activeSubScenes.size() > 0)
             activeSubScenes.get(activeSubScenes.size() - 1)._tick(delta);
 
-
     }
 
-    // called after gamestate ticks so safe to add/remove/change states here.
+    // called after gamestate ticks so safe to add/remove/change scenes here.
     public static void update() {
 
         handleSceneChange();
@@ -80,6 +84,7 @@ public class SceneManager {
                 System.out.println("Subscene not found: " + subsceneName);
                 return;
             }
+            scene._init();
             scene.onMakeActive();
             activeSubScenes.add(scene);
         }
@@ -131,7 +136,7 @@ public class SceneManager {
      * @param name
      */
     public static void setActiveScene(String name) {
-        exceptionIfSceneNameNotFound(name);
+        throwExceptionIfSceneNameNotFound(name);
 
         for (String scene : scenes.keySet()) {
             if (scene.equalsIgnoreCase(name)) {
@@ -144,7 +149,7 @@ public class SceneManager {
         System.out.println("Scene name not found: " + name);
     }
 
-    public static void exceptionIfSceneNameNotFound(String name) {
+    public static void throwExceptionIfSceneNameNotFound(String name) {
         for (String str : scenes.keySet()) {
             if (str.equalsIgnoreCase(name)) return;
         }
@@ -175,6 +180,6 @@ public class SceneManager {
     public static void popSubScene(String name) {
         subScenePopRequests.add(name);
 
-        exceptionIfSceneNameNotFound(name);
+        throwExceptionIfSceneNameNotFound(name);
     }
 }

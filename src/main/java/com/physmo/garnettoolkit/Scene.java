@@ -2,25 +2,18 @@ package com.physmo.garnettoolkit;
 
 /**
  * A scene can be thought of as a game state
+ * Each scene has a Context that contains game objects
+ * All game objects in the context get ticked and drawn.
  */
 public abstract class Scene {
 
     protected Context context = new Context();
-    private SceneManager sceneManager;
     private String name;
     private boolean initCalled = false;
 
     public Scene(String name) {
         this.name = name;
     }
-
-    //public SceneManager getSceneManager() {
-//        return sceneManager;
-//    }
-
-    //public void setSceneManager(SceneManager sceneManager) {
-//        this.sceneManager = sceneManager;
-//    }
 
     public String getName() {
         return name;

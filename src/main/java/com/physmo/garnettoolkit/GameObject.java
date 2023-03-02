@@ -95,8 +95,6 @@ public class GameObject {
     public void tick(double t) {
     }
 
-    ;
-
     public void _draw() {
         this.draw();
         for (Component c : components) {

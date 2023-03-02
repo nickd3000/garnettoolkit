@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class Context {
     // TODO: we need to handle lists of objects of the same type.
-    // TODO: add tag handling
 
     List<Object> objects = new ArrayList<>();
 

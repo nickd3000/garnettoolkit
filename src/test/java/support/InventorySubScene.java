@@ -1,6 +1,7 @@
 package support;
 
 import com.physmo.garnettoolkit.Scene;
+import com.physmo.garnettoolkit.SceneManager;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class InventorySubScene extends Scene {
         tickCount++;
         if (tickCount == 3) {
             messageList.add("InventorySubScene requesting pop, name: " + this.getName());
-            getSceneManager().popSubScene(this.getName());
+            SceneManager.popSubScene(this.getName());
         }
     }
 

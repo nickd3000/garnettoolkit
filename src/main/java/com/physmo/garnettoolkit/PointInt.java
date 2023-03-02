@@ -1,6 +1,5 @@
 package com.physmo.garnettoolkit;
 
-// Position needs to be able to handle locations and floors as well as inside/outside.
 public class PointInt {
 
     public int x;
