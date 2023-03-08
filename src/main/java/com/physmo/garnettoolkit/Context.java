@@ -14,7 +14,7 @@ public class Context {
     public void add(Object object) {
         if (object instanceof GameObject) {
             ((GameObject) object).injectContext(this);
-            ((GameObject) object)._init();
+            //((GameObject) object)._init();
         }
         objects.add(object);
     }
@@ -23,7 +23,10 @@ public class Context {
         for (Object object : objects) {
             if (object.getClass() == clazz) return (T) object;
         }
-        return null;
+
+        throw new RuntimeException("Context: object not found: " + clazz.getCanonicalName());
+
+
     }
 
     /**

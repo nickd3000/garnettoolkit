@@ -2,7 +2,12 @@ package com.physmo.garnettoolkit;
 
 public class Vector3 {
 
+    static Vector3 ZERO_VECTOR = new Vector3(0, 0, 0);
     public double x, y, z;
+
+    public Vector3() {
+        this(ZERO_VECTOR);
+    }
 
     public Vector3(double x, double y, double z) {
         this.x = x;
@@ -22,9 +27,9 @@ public class Vector3 {
         this.z = z;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Vec3{x=%.2f, y=%.2f, z=%.2f}", x, y, z);
+    public static Vector3 generateRandomRadial2D(double magnitude) {
+        double angle = (Math.random() * Math.PI * 2);
+        return new Vector3(Math.sin(angle) * magnitude, Math.cos(angle) * magnitude, 0);
     }
 
     public Vector3 add(Vector3 other) {
@@ -48,5 +53,10 @@ public class Vector3 {
         newVec.y *= v;
         newVec.z *= v;
         return newVec;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Vector3{x=%.2f, y=%.2f, z=%.2f}", x, y, z);
     }
 }

@@ -21,6 +21,7 @@ public abstract class Scene {
 
     public void _init() {
         init();
+        context.init();
         initCalled = true;
     }
 
