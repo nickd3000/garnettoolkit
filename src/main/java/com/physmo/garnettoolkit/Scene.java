@@ -35,8 +35,9 @@ public abstract class Scene {
     public abstract void tick(double delta);
 
     public void _draw() {
-        context.draw();
+
         draw();
+        context.draw();
     }
 
     public abstract void draw();

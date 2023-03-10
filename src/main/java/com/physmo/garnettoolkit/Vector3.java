@@ -27,6 +27,12 @@ public class Vector3 {
         this.z = z;
     }
 
+    public void set(Vector3 other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.z = other.z;
+    }
+
     public static Vector3 generateRandomRadial2D(double magnitude) {
         double angle = (Math.random() * Math.PI * 2);
         return new Vector3(Math.sin(angle) * magnitude, Math.cos(angle) * magnitude, 0);
