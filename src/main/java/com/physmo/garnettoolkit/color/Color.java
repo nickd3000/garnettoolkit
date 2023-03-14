@@ -37,4 +37,21 @@ public class Color {
         float[] arr = new float[]{r, g, b, a};
         return arr;
     }
+
+    public int toInt() {
+        int rgb = 0;
+
+        rgb += ((int) (clampFloat(r) * 255f)) << 24;
+        rgb += ((int) (clampFloat(g) * 255f)) << 16;
+        rgb += ((int) (clampFloat(b) * 255f)) << 8;
+        rgb += ((int) (clampFloat(a) * 255f));
+
+        return rgb;
+    }
+
+    private static float clampFloat(float f) {
+        if (f < 0) return 0;
+        if (f > 1) return 1;
+        return f;
+    }
 }

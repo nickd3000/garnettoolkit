@@ -10,9 +10,14 @@ import java.util.List;
 public class CollisionSystem extends GameObject {
 
     List<Collidable> collidables = new ArrayList<>();
+    CollisionDrawingCallback collisionDrawingCallback = null;
 
     public CollisionSystem(String name) {
         super(name);
+    }
+
+    public void setCollisionDrawingCallback(CollisionDrawingCallback collisionDrawingCallback) {
+        this.collisionDrawingCallback = collisionDrawingCallback;
     }
 
     @Override
@@ -48,6 +53,16 @@ public class CollisionSystem extends GameObject {
         Rect rect2 = c2.collisionGetRegion();
         if (rect1.intersect(rect2)) return true;
         return false;
+    }
+
+    @Override
+    public void draw() {
+
+        if (collisionDrawingCallback == null) return;
+        for (Collidable collidable : collidables) {
+            collisionDrawingCallback.draw(collidable);
+        }
+
     }
 
     public void addCollidable(Collidable collidable) {

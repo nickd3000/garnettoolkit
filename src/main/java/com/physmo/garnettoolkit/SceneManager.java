@@ -117,6 +117,8 @@ public class SceneManager {
     }
 
     public static void draw() {
+        sharedContext.draw();
+
         if (activeScene != null && activeScene.isInitCalled()) {
             activeScene._draw();
         }
