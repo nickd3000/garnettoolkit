@@ -29,14 +29,13 @@ public class CollisionSystem extends GameObject {
     public void tick(double t) {
         List<CollisionPacket> collisions = new ArrayList<>();
 
-        for (Collidable c1 : collidables) {
-            if (!c1.collisionGetGameObject().isActive()) continue;
-            for (Collidable c2 : collidables) {
-                if (!c2.collisionGetGameObject().isActive()) continue;
+        List<Collidable> activeCollidables = getListOfActiveCollidables();
+
+
+        for (Collidable c1 : activeCollidables) {
+            for (Collidable c2 : activeCollidables) {
                 if (c1 == c2) continue;
-
                 boolean collided = testCollision(c1, c2);
-
                 if (collided) collisions.add(new CollisionPacket(c1, c2));
             }
         }
@@ -46,6 +45,15 @@ public class CollisionSystem extends GameObject {
             collision.sourceEntity.collisionCallback(collision);
         }
 
+    }
+
+    private List<Collidable> getListOfActiveCollidables() {
+        List<Collidable> activeCollidables = new ArrayList<>();
+        for (Collidable collidable : collidables) {
+            if (!collidable.collisionGetGameObject().isActive()) continue;
+            activeCollidables.add(collidable);
+        }
+        return activeCollidables;
     }
 
     public boolean testCollision(Collidable c1, Collidable c2) {
@@ -59,7 +67,8 @@ public class CollisionSystem extends GameObject {
     public void draw() {
 
         if (collisionDrawingCallback == null) return;
-        for (Collidable collidable : collidables) {
+        List<Collidable> activeCollidables = getListOfActiveCollidables();
+        for (Collidable collidable : activeCollidables) {
             collisionDrawingCallback.draw(collidable);
         }
 

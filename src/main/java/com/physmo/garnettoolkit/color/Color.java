@@ -1,5 +1,6 @@
 package com.physmo.garnettoolkit.color;
 
+
 public class Color {
     public static Color BLACK, WHITE, RED, GREEN, BLUE, YELLOW;
 

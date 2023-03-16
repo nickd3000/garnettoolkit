@@ -1,5 +1,8 @@
 package com.physmo.garnettoolkit;
 
+/**
+ *
+ */
 public abstract class Component {
     protected GameObject parent;
 
