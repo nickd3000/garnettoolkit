@@ -3,7 +3,7 @@ package com.physmo.garnettoolkit;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
     Managing class for objects with special handling for GameObjects.
  */
 public class Context {
