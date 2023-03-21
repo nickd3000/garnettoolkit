@@ -83,8 +83,6 @@ public class GameObject {
     public void init() {
     }
 
-    ;
-
     public void _tick(double t) {
         this.tick(t);
         for (Component c : components) {

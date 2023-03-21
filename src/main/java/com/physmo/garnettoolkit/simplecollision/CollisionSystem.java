@@ -59,8 +59,7 @@ public class CollisionSystem extends GameObject {
     public boolean testCollision(Collidable c1, Collidable c2) {
         Rect rect1 = c1.collisionGetRegion();
         Rect rect2 = c2.collisionGetRegion();
-        if (rect1.intersect(rect2)) return true;
-        return false;
+        return rect1.intersect(rect2);
     }
 
     @Override
@@ -75,7 +74,6 @@ public class CollisionSystem extends GameObject {
     }
 
     public void addCollidable(Collidable collidable) {
-        System.out.println("adding collidable");
         collidables.add(collidable);
     }
 
