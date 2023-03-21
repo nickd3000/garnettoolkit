@@ -1,5 +1,10 @@
 package com.physmo.garnettoolkit.color;
 
+import static com.physmo.garnettoolkit.Utils.lerp;
+
+/**
+ * A color supplier used to blend two colors.
+ */
 public class ColorSupplierLinear implements ColorSupplier {
     Color c1;
     Color c2;
@@ -17,8 +22,5 @@ public class ColorSupplierLinear implements ColorSupplier {
                 lerp(c1.a, c2.a, (float) t));
     }
 
-    public static float lerp(float v1, float v2, float pos) {
-        float span = v2 - v1;
-        return (v1 + span * pos);
-    }
+
 }
