@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-    Managing class for objects with special handling for GameObjects.
+ * Managing class for objects with special handling for GameObjects.
  */
 public class Context {
     // TODO: we need to handle lists of objects of the same type.
@@ -83,5 +83,12 @@ public class Context {
                 ((GameObject) object)._draw();
             }
         }
+    }
+
+    /**
+     * Erase all objects contained within this context.
+     */
+    public void reset() {
+        objects.clear();
     }
 }
