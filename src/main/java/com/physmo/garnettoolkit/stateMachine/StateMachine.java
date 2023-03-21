@@ -14,10 +14,21 @@ public class StateMachine {
     String currentStateName;
     List<Transition> transitions = new ArrayList<>();
 
+    /**
+     * Get a string representing the current states name.
+     *
+     * @return
+     */
     public String getCurrentStateName() {
         return (currentStateName == null ? "" : currentStateName);
     }
 
+    /**
+     * Add a state to the list of states this machine can use.
+     *
+     * @param stateName The string identifier that the state will be referred to by
+     * @param state     state object
+     */
     public void addState(String stateName, StateMachineState state) {
         stateMap.put(stateName, state);
         if (currentState == null) {
@@ -28,6 +39,8 @@ public class StateMachine {
 
     /**
      * Add a state that will be called when moving between two specified states.
+     * The supplied state will be called ticked once, just before the target state.
+     * The intended use is to perform cleanup before switching to the next state
      *
      * @param fromState
      * @param toState
@@ -41,10 +54,20 @@ public class StateMachine {
         transitions.add(transition);
     }
 
+    /**
+     * Request that the state is changed on the next tick.
+     *
+     * @param stateName Name of the target state
+     */
     public void changeState(String stateName) {
         targetStateName = stateName;
     }
 
+    /**
+     * Handle any state changes then tick the currently active state.
+     *
+     * @param delta
+     */
     public void tick(double delta) {
         handleStateChange();
 
