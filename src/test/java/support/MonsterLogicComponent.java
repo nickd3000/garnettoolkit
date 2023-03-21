@@ -13,6 +13,11 @@ public class MonsterLogicComponent extends Component {
 
     }
 
+    @Override
+    public void draw() {
+
+    }
+
     public InventoryComponent accessInventoryComponent() {
         InventoryComponent inventoryComponent = parent.getComponent(InventoryComponent.class);
         return inventoryComponent;

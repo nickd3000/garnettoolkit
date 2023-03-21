@@ -12,4 +12,9 @@ public class MoveRightComponent extends Component {
     public void init() {
         System.out.println("MoveRight init");
     }
+
+    @Override
+    public void draw() {
+
+    }
 }
