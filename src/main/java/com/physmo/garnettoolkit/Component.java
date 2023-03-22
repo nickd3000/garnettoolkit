@@ -1,5 +1,8 @@
 package com.physmo.garnettoolkit;
 
+/**
+ *
+ */
 public abstract class Component {
     protected GameObject parent;
 
@@ -7,8 +10,7 @@ public abstract class Component {
 
     abstract public void init();
 
-    public void draw() {
-    }
+    abstract public void draw();
 
     public void setParent(GameObject parent) {
         this.parent = parent;

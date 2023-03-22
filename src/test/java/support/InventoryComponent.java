@@ -12,4 +12,9 @@ public class InventoryComponent extends Component {
     public void init() {
 
     }
+
+    @Override
+    public void draw() {
+
+    }
 }

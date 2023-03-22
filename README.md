@@ -1,7 +1,15 @@
-Garnet Toolkit
+## Garnet Toolkit
 
-Mainly game structure and architecture tools, no resource, graphics or sound.
+**The Non-hardware parts of a game engine in Java**
 
-SceneManager
+### Systems and components
 
+- Scene Management
+- State Machine
+- Entity/Component System
+- Object Context management
+- Color management
+- Basic collision detection
+- Basic Particle
+- Utilities
 

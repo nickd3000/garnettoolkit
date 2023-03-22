@@ -29,14 +29,13 @@ public class CollisionSystem extends GameObject {
     public void tick(double t) {
         List<CollisionPacket> collisions = new ArrayList<>();
 
-        for (Collidable c1 : collidables) {
-            if (!c1.collisionGetGameObject().isActive()) continue;
-            for (Collidable c2 : collidables) {
-                if (!c2.collisionGetGameObject().isActive()) continue;
+        List<Collidable> activeCollidables = getListOfActiveCollidables();
+
+
+        for (Collidable c1 : activeCollidables) {
+            for (Collidable c2 : activeCollidables) {
                 if (c1 == c2) continue;
-
                 boolean collided = testCollision(c1, c2);
-
                 if (collided) collisions.add(new CollisionPacket(c1, c2));
             }
         }
@@ -48,25 +47,33 @@ public class CollisionSystem extends GameObject {
 
     }
 
+    private List<Collidable> getListOfActiveCollidables() {
+        List<Collidable> activeCollidables = new ArrayList<>();
+        for (Collidable collidable : collidables) {
+            if (!collidable.collisionGetGameObject().isActive()) continue;
+            activeCollidables.add(collidable);
+        }
+        return activeCollidables;
+    }
+
     public boolean testCollision(Collidable c1, Collidable c2) {
         Rect rect1 = c1.collisionGetRegion();
         Rect rect2 = c2.collisionGetRegion();
-        if (rect1.intersect(rect2)) return true;
-        return false;
+        return rect1.intersect(rect2);
     }
 
     @Override
     public void draw() {
 
         if (collisionDrawingCallback == null) return;
-        for (Collidable collidable : collidables) {
+        List<Collidable> activeCollidables = getListOfActiveCollidables();
+        for (Collidable collidable : activeCollidables) {
             collisionDrawingCallback.draw(collidable);
         }
 
     }
 
     public void addCollidable(Collidable collidable) {
-        System.out.println("adding collidable");
         collidables.add(collidable);
     }
 

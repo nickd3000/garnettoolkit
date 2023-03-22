@@ -1,7 +1,16 @@
 package com.physmo.garnettoolkit.curve;
 
 
+import static com.physmo.garnettoolkit.Utils.lerp;
+
+// TODO: make these static objects within the class. we shouldn't need to create them
 public class StandardCurve implements Curve {
+
+    public static StandardCurve LINE_UP;
+
+    static {
+        LINE_UP = new StandardCurve(CurveType.LINE_UP);
+    }
 
     public CurveType curveType;
 
@@ -30,8 +39,5 @@ public class StandardCurve implements Curve {
         return 0;
     }
 
-    public static double lerp(double v1, double v2, double pos) {
-        double span = v2 - v1;
-        return (v1 + span * pos);
-    }
+
 }
