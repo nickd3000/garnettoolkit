@@ -16,10 +16,12 @@ public class Context {
     private List<Object> objects = new ArrayList<>();
     private boolean duringTick = false;
 
+    public Context() {
+    }
+
     public void add(Object object) {
         if (object instanceof GameObject) {
             ((GameObject) object).injectContext(this);
-            //((GameObject) object)._init();
         }
         if (duringTick) {
             newObjects.add(object);
@@ -78,9 +80,6 @@ public class Context {
         if (newObjects.size() == 0) return;
         for (Object object : newObjects) {
             objects.add(object);
-            if (object instanceof GameObject) {
-                ((GameObject) object)._init();
-            }
         }
         newObjects.clear();
     }
@@ -125,6 +124,8 @@ public class Context {
             if (object instanceof GameObject) {
                 if (!((GameObject) object).isDestroy()) {
                     keep.add(object);
+                } else {
+                    //System.out.println("skipping");
                 }
             } else {
                 keep.add(object);
