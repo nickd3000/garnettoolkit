@@ -21,8 +21,21 @@ public class GameObject {
     boolean active = true;
     boolean visible = true;
 
+    boolean destroy = false;
+
+    public boolean isDestroy() {
+        return destroy;
+    }
+
     public GameObject(String name) {
         this.name = name;
+    }
+
+    /**
+     * Call to request this object is destroyed by the context update loop.
+     */
+    public void destroy() {
+        this.destroy = true;
     }
 
     public Context getContext() {
