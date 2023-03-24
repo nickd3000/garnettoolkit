@@ -20,15 +20,18 @@ public class GameObject {
     Set<String> tags = new HashSet<>();
     boolean active = true;
     boolean visible = true;
-
     boolean destroy = false;
-
-    public boolean isDestroy() {
-        return destroy;
-    }
 
     public GameObject(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isDestroy() {
+        return destroy;
     }
 
     /**
