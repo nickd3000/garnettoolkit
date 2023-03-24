@@ -41,7 +41,7 @@ public class Context {
     }
 
     /**
-     * Search all game objects for a specific component.
+     * Search all game objects in this context for a specific component.
      * NOTE: Only use this if you are sure there is only one game object with a given component.
      * (Or happy to get the first instance found)
      *
@@ -97,6 +97,7 @@ public class Context {
     public void tick(double t) {
         addNewObjects();
         initialiseNewObjects();
+        processDestruction();
 
         duringTick = true;
         for (Object object : objects) {
@@ -106,7 +107,7 @@ public class Context {
             }
         }
         duringTick = false;
-        processDestruction();
+
     }
 
     private void processDestruction() {
