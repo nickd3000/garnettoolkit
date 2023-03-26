@@ -1,7 +1,7 @@
 package com.physmo.garnettoolkit;
 
 /**
- *
+ * Abstract class representing logic and behaviour that can be attached to a game object.
  */
 public abstract class Component {
     protected GameObject parent;
