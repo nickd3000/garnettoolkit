@@ -20,9 +20,25 @@ public class GameObject {
     Set<String> tags = new HashSet<>();
     boolean active = true;
     boolean visible = true;
+    boolean destroy = false;
 
     public GameObject(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isDestroy() {
+        return destroy;
+    }
+
+    /**
+     * Call to request this object is destroyed by the context update loop.
+     */
+    public void destroy() {
+        this.destroy = true;
     }
 
     public Context getContext() {

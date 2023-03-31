@@ -10,6 +10,7 @@ import java.util.List;
 public class CollisionSystem extends GameObject {
 
     List<Collidable> collidables = new ArrayList<>();
+    List<Collidable> collidablesPendingRemoval = new ArrayList<>();
     CollisionDrawingCallback collisionDrawingCallback = null;
 
     public CollisionSystem(String name) {
@@ -27,6 +28,8 @@ public class CollisionSystem extends GameObject {
 
     @Override
     public void tick(double t) {
+        removePendingCollidables();
+
         List<CollisionPacket> collisions = new ArrayList<>();
 
         List<Collidable> activeCollidables = getListOfActiveCollidables();
@@ -62,6 +65,20 @@ public class CollisionSystem extends GameObject {
         return rect1.intersect(rect2);
     }
 
+    private void removePendingCollidables() {
+        if (collidablesPendingRemoval.size() == 0) return;
+
+        List<Collidable> keepList = new ArrayList<>();
+
+        for (Collidable collidable : collidables) {
+            if (collidablesPendingRemoval.contains(collidable)) continue;
+            keepList.add(collidable);
+        }
+
+        collidablesPendingRemoval.clear();
+        collidables = keepList;
+    }
+
     @Override
     public void draw() {
 
@@ -77,4 +94,11 @@ public class CollisionSystem extends GameObject {
         collidables.add(collidable);
     }
 
+    public int getSize() {
+        return collidables.size();
+    }
+
+    public void removeCollidable(Collidable collidable) {
+        collidablesPendingRemoval.add(collidable);
+    }
 }

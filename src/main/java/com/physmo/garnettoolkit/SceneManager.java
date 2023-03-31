@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO: make this a singleton
 public class SceneManager {
 
     private static final List<String> subScenePushRequests;

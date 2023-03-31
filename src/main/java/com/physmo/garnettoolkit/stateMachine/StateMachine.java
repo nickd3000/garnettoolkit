@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class StateMachine {
 
@@ -21,6 +22,10 @@ public class StateMachine {
      */
     public String getCurrentStateName() {
         return (currentStateName == null ? "" : currentStateName);
+    }
+
+    public boolean isCurrentState(String name) {
+        return currentStateName.compareToIgnoreCase(name) == 0;
     }
 
     /**
@@ -80,10 +85,8 @@ public class StateMachine {
         if (targetStateName == null) return;
 
         // First, run any state transition that matches our source and target state.
-        Transition transition = findTransition(currentStateName, targetStateName);
-        if (transition != null) {
-            transition.transitionState.tick(0);
-        }
+        Optional<Transition> transition = findTransition(currentStateName, targetStateName);
+        transition.ifPresent(t -> t.transitionState.tick(0));
 
         if (stateMap.containsKey(targetStateName)) {
             currentState = stateMap.get(targetStateName);
@@ -94,13 +97,14 @@ public class StateMachine {
         }
     }
 
-    private Transition findTransition(String fromState, String toState) {
+    // TODO: should return an optional?
+    private Optional<Transition> findTransition(String fromState, String toState) {
         for (Transition transition : transitions) {
             if (transition.fromState.compareTo(fromState) != 0 && transition.fromState.compareTo(ANY_STATE) != 0)
                 continue;
             if (transition.toState.compareTo(toState) != 0 && transition.toState.compareTo(ANY_STATE) != 0) continue;
-            return transition;
+            return Optional.of(transition);
         }
-        return null;
+        return Optional.empty();
     }
 }

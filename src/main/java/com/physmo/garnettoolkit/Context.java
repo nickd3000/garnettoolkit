@@ -5,18 +5,30 @@ import java.util.List;
 
 /**
  * Managing class for objects with special handling for GameObjects.
+ * <p>
+ * Newly added GameObjects will be initialised just before they are ticked for the first time.
+ * GameObjects added during the tick cycle will be available on the next tick cycle.
  */
 public class Context {
-    // TODO: we need to handle lists of objects of the same type.
 
-    List<Object> objects = new ArrayList<>();
+    private final List<Object> newObjects = new ArrayList<>();
+    private final List<Object> uninitialisedObjects = new ArrayList<>();
+    private List<Object> objects = new ArrayList<>();
+    private boolean duringTick = false;
+
+    public Context() {
+    }
 
     public void add(Object object) {
         if (object instanceof GameObject) {
             ((GameObject) object).injectContext(this);
-            //((GameObject) object)._init();
         }
-        objects.add(object);
+        if (duringTick) {
+            newObjects.add(object);
+        } else {
+            objects.add(object);
+        }
+        uninitialisedObjects.add(object);
     }
 
     public <T> T getObjectByType(Class<T> clazz) {
@@ -26,17 +38,16 @@ public class Context {
 
         throw new RuntimeException("Context: object not found: " + clazz.getCanonicalName());
 
-
     }
 
     /**
-     * Search all game objects for a specific component.
+     * Search all game objects in this context for a specific component.
      * NOTE: Only use this if you are sure there is only one game object with a given component.
      * (Or happy to get the first instance found)
      *
-     * @param clazz
+     * @param clazz class type of components to return
      * @param <T>
-     * @return
+     * @return the component matching the passed in class type
      */
     public <T> T getComponent(Class<T> clazz) {
         for (Object object : objects) {
@@ -61,20 +72,68 @@ public class Context {
     }
 
     public void init() {
-        for (Object object : objects) {
+        addNewObjects();
+        initialiseNewObjects();
+    }
+
+    private void addNewObjects() {
+        if (newObjects.size() == 0) return;
+        for (Object object : newObjects) {
+            objects.add(object);
+        }
+        newObjects.clear();
+    }
+
+    private void initialiseNewObjects() {
+        if (uninitialisedObjects.size() == 0) return;
+        for (Object object : uninitialisedObjects) {
             if (object instanceof GameObject) {
                 ((GameObject) object)._init();
             }
         }
+        uninitialisedObjects.clear();
     }
 
     public void tick(double t) {
+        addNewObjects();
+        initialiseNewObjects();
+        processDestruction();
+
+        duringTick = true;
         for (Object object : objects) {
             if (object instanceof GameObject) {
                 if (!((GameObject) object).isActive()) continue;
                 ((GameObject) object)._tick(t);
             }
         }
+        duringTick = false;
+
+    }
+
+    private void processDestruction() {
+        int destructionCount = 0;
+        for (Object object : objects) {
+            if (object instanceof GameObject) {
+                if (((GameObject) object).isDestroy()) destructionCount++;
+            }
+        }
+        if (destructionCount == 0) return;
+
+        List<Object> keep = new ArrayList<>();
+
+        for (Object object : objects) {
+            if (object instanceof GameObject) {
+                if (!((GameObject) object).isDestroy()) {
+                    keep.add(object);
+                } else {
+                    //System.out.println("skipping");
+                }
+            } else {
+                keep.add(object);
+            }
+        }
+
+        objects = keep;
     }
 
     public void draw() {
@@ -90,5 +149,9 @@ public class Context {
      */
     public void reset() {
         objects.clear();
+    }
+
+    public int getObjectCount() {
+        return objects.size();
     }
 }
