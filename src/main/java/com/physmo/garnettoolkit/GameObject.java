@@ -77,9 +77,10 @@ public class GameObject {
         this.context = context;
     }
 
-    public void addComponent(Component component) {
+    public GameObject addComponent(Component component) {
         component.setParent(this);
         components.add(component);
+        return this;
     }
 
     public <T> T getComponentByType(Class<T> clazz) {
