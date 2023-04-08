@@ -154,4 +154,9 @@ public class Context {
     public int getObjectCount() {
         return objects.size();
     }
+
+    public GameObject getObjectByTag(String tag) {
+        List<GameObject> objectsByTag = getObjectsByTag(tag);
+        return objectsByTag.get(0);
+    }
 }
