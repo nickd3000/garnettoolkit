@@ -16,6 +16,14 @@ public class GameObjectBucketGrid {
 
     }
 
+    public int getCellWidth() {
+        return cellWidth;
+    }
+
+    public int getCellHeight() {
+        return cellHeight;
+    }
+
     public int getSize() {
         return objects.size();
     }
@@ -24,6 +32,9 @@ public class GameObjectBucketGrid {
         objects = new HashMap<>();
     }
 
+    public int[] getCellCoordsForPoint(int x, int y) {
+        return new int[]{x / cellWidth, y / cellHeight};
+    }
 
     public void addObject(Object o, int x, int y) {
         int num = encoder(x / cellWidth, y / cellHeight);

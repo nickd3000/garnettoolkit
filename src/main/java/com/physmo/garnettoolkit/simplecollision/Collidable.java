@@ -8,5 +8,7 @@ public interface Collidable {
 
     void collisionCallback(CollisionPacket collisionPacket);
 
+    void proximityCallback(RelativeObject relativeObject);
+
     GameObject collisionGetGameObject();
 }

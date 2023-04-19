@@ -14,6 +14,8 @@ public class ColliderComponent extends Component implements Collidable {
     CollisionCallback callbackEnter = null;
     CollisionCallback callbackLeave = null;
     CollisionCallback callbackContinue = null;
+    ProximityCallback callbackProximity = null;
+
     List<GameObject> newCollisions = new ArrayList<>();
     List<GameObject> existingCollisions = new ArrayList<>();
 
@@ -36,6 +38,10 @@ public class ColliderComponent extends Component implements Collidable {
 
     public void setCallbackContinue(CollisionCallback callback) {
         this.callbackContinue = callback;
+    }
+
+    public void setCallbackProximity(ProximityCallback callback) {
+        this.callbackProximity = callback;
     }
 
     @Override
@@ -100,7 +106,16 @@ public class ColliderComponent extends Component implements Collidable {
     }
 
     @Override
+    public void proximityCallback(RelativeObject relativeObject) {
+        if (callbackProximity == null) return;
+
+        callbackProximity.go(relativeObject);
+    }
+
+    @Override
     public GameObject collisionGetGameObject() {
         return parent;
     }
+
+
 }
