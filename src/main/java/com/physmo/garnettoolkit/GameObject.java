@@ -17,7 +17,7 @@ public class GameObject {
     protected GameProperties properties = new GameProperties();
     protected Vector3 transform = new Vector3(0, 0, 0);
     String name;
-    Set<String> tags = new HashSet<>();
+    Set<Integer> tags = new HashSet<>();
     boolean active = true;
     boolean visible = true;
     boolean destroy = false;
@@ -77,9 +77,10 @@ public class GameObject {
         this.context = context;
     }
 
-    public void addComponent(Component component) {
+    public GameObject addComponent(Component component) {
         component.setParent(this);
         components.add(component);
+        return this;
     }
 
     public <T> T getComponentByType(Class<T> clazz) {
@@ -124,11 +125,19 @@ public class GameObject {
     }
 
     public void addTag(String tag) {
-        tags.add(tag);
+        tags.add(StringIdBroker.INSTANCE.getId(tag));
     }
 
-    public Set<String> getTags() {
+    public Set<Integer> getTags() {
         return tags;
+    }
+
+    public boolean hasTag(String tag) {
+        return hasTag(StringIdBroker.getInstance().getId(tag));
+    }
+
+    public boolean hasTag(int tagId) {
+        return tags.contains(tagId);
     }
 
     public boolean isActive() {

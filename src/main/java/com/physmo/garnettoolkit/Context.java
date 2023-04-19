@@ -61,9 +61,11 @@ public class Context {
     public List<GameObject> getObjectsByTag(String tag) {
         List<GameObject> list = new ArrayList<>();
 
+        int tagId = StringIdBroker.getInstance().getId(tag);
+
         for (Object object : objects) {
             if (object instanceof GameObject) {
-                if (((GameObject) object).getTags().contains(tag)) {
+                if (((GameObject) object).getTags().contains(tagId)) {
                     list.add((GameObject) object);
                 }
             }
@@ -153,5 +155,10 @@ public class Context {
 
     public int getObjectCount() {
         return objects.size();
+    }
+
+    public GameObject getObjectByTag(String tag) {
+        List<GameObject> objectsByTag = getObjectsByTag(tag);
+        return objectsByTag.get(0);
     }
 }

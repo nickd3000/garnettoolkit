@@ -46,6 +46,12 @@ public class Vector3 {
         return newVec;
     }
 
+    public Vector3 getDirectionTo(Vector3 other) {
+        Vector3 v = this.sub(other);
+        v.normalise();
+        return v;
+    }
+
     // 'i' suffix means do the operation "in-place", i.e. update the object.
     public void addi(Vector3 other) {
         x += other.x;
@@ -61,8 +67,36 @@ public class Vector3 {
         return newVec;
     }
 
+    public Vector3 sub(Vector3 other) {
+        Vector3 newVec = new Vector3(this);
+        newVec.x -= other.x;
+        newVec.y -= other.y;
+        newVec.z -= other.z;
+        return newVec;
+    }
+
     @Override
     public String toString() {
         return String.format("Vector3{x=%.2f, y=%.2f, z=%.2f}", x, y, z);
+    }
+
+    public void normalise() {
+        double l = Math.sqrt((x * x) + (y * y) + (z * z));
+        this.x /= l;
+        this.y /= l;
+        this.z /= l;
+    }
+
+    public double distance(Vector3 other) {
+        double x = this.x - other.x;
+        double y = this.y - other.y;
+        double z = this.z - other.z;
+        return Math.sqrt((x * x) + (y * y) + (z * z));
+    }
+
+    public double distance(double x, double y) {
+        double xx = this.x - x;
+        double yy = this.y - y;
+        return Math.sqrt((xx * xx) + (yy * yy));
     }
 }
