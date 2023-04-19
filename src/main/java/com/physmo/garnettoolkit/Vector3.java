@@ -93,4 +93,10 @@ public class Vector3 {
         double z = this.z - other.z;
         return Math.sqrt((x * x) + (y * y) + (z * z));
     }
+
+    public double distance(double x, double y) {
+        double xx = this.x - x;
+        double yy = this.y - y;
+        return Math.sqrt((xx * xx) + (yy * yy));
+    }
 }
