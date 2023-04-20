@@ -150,6 +150,14 @@ public class CollisionSystem extends GameObject {
         collidablesPendingRemoval.add(collidable);
     }
 
+    /**
+     * Search system for objects that are close to a supplied coordinate.
+     *
+     * @param x
+     * @param y
+     * @param withinRadius
+     * @return
+     */
     public List<RelativeObject> getNearestObjects(int x, int y, double withinRadius) {
         int cellWidth = bucketGrid.getCellWidth();
 
