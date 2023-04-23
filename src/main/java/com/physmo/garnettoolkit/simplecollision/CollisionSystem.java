@@ -96,13 +96,61 @@ public class CollisionSystem extends GameObject {
         return collisions;
     }
 
-    private List<Collidable> getListOfActiveCollidables() {
-        List<Collidable> activeCollidables = new ArrayList<>();
+    public List<Collidable> getListOfCollidablesWithTag(String tag) {
+        int tagId = StringIdBroker.INSTANCE.getId(tag);
+
+        List<Collidable> collidableList = new ArrayList<>();
         for (Collidable collidable : collidables) {
-            if (!collidable.collisionGetGameObject().isActive()) continue;
-            activeCollidables.add(collidable);
+            if (!collidable.collisionGetGameObject().hasTag(tagId)) continue;
+            collidableList.add(collidable);
         }
-        return activeCollidables;
+        return collidableList;
+    }
+
+    /**
+     * Search system for objects that are close to a supplied coordinate.
+     *
+     * @param x
+     * @param y
+     * @param withinRadius
+     * @return
+     */
+    public List<RelativeObject> getNearestObjects(String tag, int x, int y, double withinRadius) {
+        int tagId = StringIdBroker.INSTANCE.getId(tag);
+        int cellWidth = bucketGrid.getCellWidth();
+
+        int[] cellCoords = bucketGrid.getCellCoordsForPoint(x, y);
+
+        int tileRadius = (int) ((withinRadius / bucketGrid.getCellWidth()) + 1);
+
+        List<Object> surroundingObjects = bucketGrid.getSurroundingObjects(cellCoords[0], cellCoords[1], tileRadius);
+        List<Object> filteredObjects = new ArrayList<>();
+
+        for (Object surroundingObject : surroundingObjects) {
+            if (((Collidable) surroundingObject).collisionGetGameObject().hasTag(tagId))
+                filteredObjects.add(surroundingObject);
+        }
+
+
+        List<RelativeObject> nearObjects = new ArrayList<>();
+
+        for (Object surroundingObject : filteredObjects) {
+            Vector3 transform1 = ((Collidable) surroundingObject).collisionGetGameObject().getTransform();
+            double distance = transform1.distance(x, y);
+            if (distance < withinRadius) {
+                RelativeObject relativeObject = new RelativeObject();
+                relativeObject.originX = x;
+                relativeObject.originY = y;
+                relativeObject.distance = distance;
+                relativeObject.dx = (transform1.x - x) / distance;
+                relativeObject.dy = (transform1.y - y) / distance;
+                relativeObject.otherObject = (Collidable) surroundingObject;
+                nearObjects.add(relativeObject);
+
+            }
+        }
+        return nearObjects;
+
     }
 
     public boolean testCollision(Collidable c1, Collidable c2) {
@@ -151,63 +199,25 @@ public class CollisionSystem extends GameObject {
     }
 
     /**
-     * Search system for objects that are close to a supplied coordinate.
-     *
-     * @param x
-     * @param y
-     * @param withinRadius
-     * @return
-     */
-    public List<RelativeObject> getNearestObjects(int x, int y, double withinRadius) {
-        int cellWidth = bucketGrid.getCellWidth();
-
-
-        int[] cellCoords = bucketGrid.getCellCoordsForPoint(x, y);
-
-        int tileRadius = (int) ((withinRadius / bucketGrid.getCellWidth()) + 1);
-
-        List<Object> surroundingObjects = bucketGrid.getSurroundingObjects(cellCoords[0], cellCoords[1], tileRadius);
-        List<RelativeObject> nearObjects = new ArrayList<>();
-
-        for (Object surroundingObject : surroundingObjects) {
-            Vector3 transform1 = ((Collidable) surroundingObject).collisionGetGameObject().getTransform();
-            double distance = transform1.distance(x, y);
-            if (distance < withinRadius) {
-                RelativeObject relativeObject = new RelativeObject();
-                relativeObject.originX = x;
-                relativeObject.originY = y;
-                relativeObject.distance = distance;
-                relativeObject.dx = (transform1.x - x) / distance;
-                relativeObject.dy = (transform1.y - y) / distance;
-                relativeObject.otherObject = (Collidable) surroundingObject;
-                nearObjects.add(relativeObject);
-
-            }
-        }
-        return nearObjects;
-
-    }
-
-    /**
      * Check for objects that are close to each other and call their
      * processing functions
      */
     public int processCloseObjects(String tag, double distanceThreshold) {
         int tagId = StringIdBroker.INSTANCE.getId(tag);
 
-        bucketGrid = new GameObjectBucketGrid(32, 32);
+        GameObjectBucketGrid coBucketGrid = new GameObjectBucketGrid(32, 32);
         for (Collidable collidable : getListOfActiveCollidables()) {
             if (!collidable.collisionGetGameObject().hasTag(tagId)) continue;
 
-            bucketGrid.addObject(collidable, (int) collidable.collisionGetRegion().x, (int) collidable.collisionGetRegion().y);
+            coBucketGrid.addObject(collidable, (int) collidable.collisionGetRegion().x, (int) collidable.collisionGetRegion().y);
         }
         int count = 0;
         List<RelativeObject> nearObjects = new ArrayList<>();
-        List<Integer[]> listOfActiveCells = bucketGrid.getListOfActiveCells();
+        List<Integer[]> listOfActiveCells = coBucketGrid.getListOfActiveCells();
         for (Integer[] cellCoords : listOfActiveCells) {
 
-            List<Object> cellObjects = bucketGrid.getCellObjects(cellCoords[0], cellCoords[1]);
-            List<Object> surroundingObjects = bucketGrid.getSurroundingObjects(cellCoords[0], cellCoords[1], 1);
+            List<Object> cellObjects = coBucketGrid.getCellObjects(cellCoords[0], cellCoords[1]);
+            List<Object> surroundingObjects = coBucketGrid.getSurroundingObjects(cellCoords[0], cellCoords[1], 1);
 
 
             for (Object cellObject : cellObjects) {
@@ -241,5 +251,14 @@ public class CollisionSystem extends GameObject {
         }
 
         return count;
+    }
+
+    public List<Collidable> getListOfActiveCollidables() {
+        List<Collidable> activeCollidables = new ArrayList<>();
+        for (Collidable collidable : collidables) {
+            if (!collidable.collisionGetGameObject().isActive()) continue;
+            activeCollidables.add(collidable);
+        }
+        return activeCollidables;
     }
 }
