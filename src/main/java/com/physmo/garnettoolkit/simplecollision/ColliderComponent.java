@@ -80,6 +80,13 @@ public class ColliderComponent extends Component implements Collidable {
         height = 12;
     }
 
+    public void setCollisionRegion(int offsetX, int offsetY, int width, int height) {
+        this.ox = offsetX;
+        this.oy = offsetY;
+        this.width = width;
+        this.height = height;
+    }
+
     @Override
     public void tick(double t) {
         List<GameObject> keepList = new ArrayList<>();
