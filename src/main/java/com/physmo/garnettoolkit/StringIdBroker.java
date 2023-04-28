@@ -3,7 +3,9 @@ package com.physmo.garnettoolkit;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Service that stores cached string ID's for use in fast ID lookup.
+ */
 public enum StringIdBroker {
 
     INSTANCE;

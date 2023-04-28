@@ -68,6 +68,13 @@ public class GameObjectBucketGrid {
         return new Integer[]{x, y};
     }
 
+    /**
+     * Return a list of objects contained in the cell referred to by the supplied coordinate.
+     *
+     * @param cellX
+     * @param cellY
+     * @return
+     */
     public List<Object> getCellObjects(int cellX, int cellY) {
         int index = encoder(cellX, cellY);
         if (objects.containsKey(index)) {
