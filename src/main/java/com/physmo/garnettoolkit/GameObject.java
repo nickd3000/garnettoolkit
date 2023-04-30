@@ -133,7 +133,7 @@ public class GameObject {
     }
 
     public boolean hasTag(String tag) {
-        return hasTag(StringIdBroker.getInstance().getId(tag));
+        return hasTag(StringIdBroker.INSTANCE.getId(tag));
     }
 
     public boolean hasTag(int tagId) {
