@@ -9,6 +9,7 @@ public class GameObjectBucketGrid {
     Map<Integer, List<Object>> objects = new HashMap<>();
     int cellWidth;
     int cellHeight;
+    int maxObjectsPerCell = 10;
 
     public GameObjectBucketGrid(int cellWidth, int cellHeight) {
         this.cellWidth = cellWidth;
@@ -42,6 +43,9 @@ public class GameObjectBucketGrid {
         if (!objects.containsKey(num)) {
             objects.put(num, new ArrayList<>());
         }
+
+        if (objects.get(num).size() > maxObjectsPerCell) return;
+
         objects.get(num).add(o);
     }
 
