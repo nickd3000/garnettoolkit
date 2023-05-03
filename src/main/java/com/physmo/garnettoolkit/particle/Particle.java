@@ -26,28 +26,8 @@ public class Particle {
         position.y += direction.y * _speed;
         position.z += direction.z * _speed;
 
-//        direction.x += force.x * delta;
-//        direction.y += force.y * delta;
-//        direction.z += force.z * delta;
-
-//        direction.x -= direction.x * friction * delta;
-//        direction.y -= direction.y * friction * delta;
-//        direction.z -= direction.z * friction * delta;
-
         age += delta;
         if (age > lifeTime) active = false;
     }
 
-//    public void draw(SpriteBatch sb) {
-//        Sprite2D spr = Sprite2D.build(
-//                (int) (position.x) - 8,
-//                (int) (position.y) - 8,
-//                16, 16, 16 * 3, 0, 16, 16);
-//
-//        float pAge = (float) (age / lifeTime);
-//
-//        spr.addColor(colorSupplier.getColor(pAge));
-//
-//        sb.add(spr);
-//    }
 }
