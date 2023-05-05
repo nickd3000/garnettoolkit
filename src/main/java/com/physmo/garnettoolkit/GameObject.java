@@ -11,12 +11,12 @@ import java.util.Set;
  */
 public class GameObject {
 
+    protected Vector3 transform = new Vector3(0, 0, 0);
+    String name;
     protected final List<Component> components = new ArrayList<>();
     private final PointInt position = new PointInt();
     protected Context context;
-    protected GameProperties properties = new GameProperties();
-    protected Vector3 transform = new Vector3(0, 0, 0);
-    String name;
+
     Set<Integer> tags = new HashSet<>();
     boolean active = true;
     boolean visible = true;
@@ -35,7 +35,7 @@ public class GameObject {
     }
 
     /**
-     * Call to request this object is destroyed by the context update loop.
+     * Request this object is destroyed by the context update loop.
      */
     public void destroy() {
         this.destroy = true;
@@ -69,9 +69,6 @@ public class GameObject {
         position.y = y;
     }
 
-    public GameProperties getProperties() {
-        return properties;
-    }
 
     public void injectContext(Context context) {
         this.context = context;

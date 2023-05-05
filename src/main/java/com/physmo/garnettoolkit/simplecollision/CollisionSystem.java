@@ -2,7 +2,6 @@ package com.physmo.garnettoolkit.simplecollision;
 
 
 import com.physmo.garnettoolkit.GameObject;
-import com.physmo.garnettoolkit.GameObjectBucketGrid;
 import com.physmo.garnettoolkit.Rect;
 import com.physmo.garnettoolkit.StringIdBroker;
 import com.physmo.garnettoolkit.Vector3;

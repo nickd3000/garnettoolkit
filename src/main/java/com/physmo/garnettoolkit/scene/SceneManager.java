@@ -1,4 +1,6 @@
-package com.physmo.garnettoolkit;
+package com.physmo.garnettoolkit.scene;
+
+import com.physmo.garnettoolkit.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;

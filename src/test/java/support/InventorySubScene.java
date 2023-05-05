@@ -1,7 +1,7 @@
 package support;
 
-import com.physmo.garnettoolkit.Scene;
-import com.physmo.garnettoolkit.SceneManager;
+import com.physmo.garnettoolkit.scene.Scene;
+import com.physmo.garnettoolkit.scene.SceneManager;
 
 import java.util.List;
 

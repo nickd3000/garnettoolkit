@@ -1,4 +1,6 @@
-package com.physmo.garnettoolkit;
+package com.physmo.garnettoolkit.scene;
+
+import com.physmo.garnettoolkit.Context;
 
 /**
  * A scene can be thought of as a game state
@@ -8,7 +10,7 @@ package com.physmo.garnettoolkit;
 public abstract class Scene {
 
     protected Context context = new Context();
-    private String name;
+    private final String name;
     private boolean initCalled = false;
 
     public Scene(String name) {
