@@ -1,4 +1,4 @@
-package com.physmo.garnettoolkit;
+package com.physmo.garnettoolkit.simplecollision;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +9,13 @@ public class GameObjectBucketGrid {
     Map<Integer, List<Object>> objects = new HashMap<>();
     int cellWidth;
     int cellHeight;
+    int maxObjectsPerCell = 10;
+    int shiftX = 100;
+    int shiftY = 100;
 
     public GameObjectBucketGrid(int cellWidth, int cellHeight) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
-
     }
 
     public int getCellWidth() {
@@ -42,16 +44,28 @@ public class GameObjectBucketGrid {
         if (!objects.containsKey(num)) {
             objects.put(num, new ArrayList<>());
         }
+
+        if (objects.get(num).size() > maxObjectsPerCell) return;
+
         objects.get(num).add(o);
     }
 
-    private int encoder(int x, int y) {
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
+    public int encoder(int x, int y) {
+        if (x < -shiftX) x = -shiftX;
+        if (y < -shiftY) y = -shiftY;
         if (x > 100) x = 100;
         if (y > 100) y = 100;
 
+        x += shiftX;
+        y += shiftY;
+
         return ((x & 0b1111_1111_1111) << 12) + (y & 0b1111_1111_1111);
+    }
+
+    public Integer[] decoder(int v) {
+        int x = (v >> 12) & 0b1111_1111_1111;
+        int y = (v) & 0b1111_1111_1111;
+        return new Integer[]{x - shiftX, y - shiftY};
     }
 
     public List<Integer[]> getListOfActiveCells() {
@@ -62,11 +76,6 @@ public class GameObjectBucketGrid {
         return activeCells;
     }
 
-    private Integer[] decoder(int v) {
-        int x = (v >> 12) & 0b1111_1111_1111;
-        int y = (v) & 0b1111_1111_1111;
-        return new Integer[]{x, y};
-    }
 
     /**
      * Return a list of objects contained in the cell referred to by the supplied coordinate.

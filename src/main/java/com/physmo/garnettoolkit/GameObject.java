@@ -13,9 +13,8 @@ public class GameObject {
 
     protected final List<Component> components = new ArrayList<>();
     private final PointInt position = new PointInt();
-    protected Context context;
-    protected GameProperties properties = new GameProperties();
     protected Vector3 transform = new Vector3(0, 0, 0);
+    protected Context context;
     String name;
     Set<Integer> tags = new HashSet<>();
     boolean active = true;
@@ -35,7 +34,7 @@ public class GameObject {
     }
 
     /**
-     * Call to request this object is destroyed by the context update loop.
+     * Request this object is destroyed by the context update loop.
      */
     public void destroy() {
         this.destroy = true;
@@ -69,9 +68,6 @@ public class GameObject {
         position.y = y;
     }
 
-    public GameProperties getProperties() {
-        return properties;
-    }
 
     public void injectContext(Context context) {
         this.context = context;
@@ -133,7 +129,7 @@ public class GameObject {
     }
 
     public boolean hasTag(String tag) {
-        return hasTag(StringIdBroker.getInstance().getId(tag));
+        return hasTag(StringIdBroker.INSTANCE.getId(tag));
     }
 
     public boolean hasTag(int tagId) {

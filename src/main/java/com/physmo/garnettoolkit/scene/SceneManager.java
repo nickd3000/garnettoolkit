@@ -1,10 +1,8 @@
-package com.physmo.garnettoolkit;
+package com.physmo.garnettoolkit.scene;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.physmo.garnettoolkit.Context;
+
+import java.util.*;
 
 public class SceneManager {
 

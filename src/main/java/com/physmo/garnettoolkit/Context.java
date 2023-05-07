@@ -61,7 +61,7 @@ public class Context {
     public List<GameObject> getObjectsByTag(String tag) {
         List<GameObject> list = new ArrayList<>();
 
-        int tagId = StringIdBroker.getInstance().getId(tag);
+        int tagId = StringIdBroker.INSTANCE.getId(tag);
 
         for (Object object : objects) {
             if (object instanceof GameObject) {

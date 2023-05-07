@@ -31,19 +31,34 @@ public class Color {
         setValues(1, 1, 1, 1);
     }
 
-    public void setValues(float r, float g, float b, float a) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-    }
-
     public Color(float r, float g, float b) {
         setValues(r, g, b, 1);
     }
 
     public Color(float r, float g, float b, float a) {
         setValues(r, g, b, a);
+    }
+
+    private static float clampFloat(float f) {
+        if (f < 0) return 0;
+        if (f > 1) return 1;
+        return f;
+    }
+
+    public static float[] rgbToFloat(int rgba) {
+        float[] f = new float[4];
+        f[0] = ((rgba >> 24) & 0xff) / 255f;
+        f[1] = ((rgba >> 16) & 0xff) / 255f;
+        f[2] = ((rgba >> 8) & 0xff) / 255f;
+        f[3] = ((rgba) & 0xff) / 255f;
+        return f;
+    }
+
+    public void setValues(float r, float g, float b, float a) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
     }
 
     public float[] toArray() {
@@ -60,20 +75,5 @@ public class Color {
         rgb += ((int) (clampFloat(a) * 255f));
 
         return rgb;
-    }
-
-    private static float clampFloat(float f) {
-        if (f < 0) return 0;
-        if (f > 1) return 1;
-        return f;
-    }
-
-    public static float[] rgbToFloat(int rgba) {
-        float[] f = new float[4];
-        f[0] = ((rgba >> 24) & 0xff) / 255f;
-        f[1] = ((rgba >> 16) & 0xff) / 255f;
-        f[2] = ((rgba >> 8) & 0xff) / 255f;
-        f[3] = ((rgba) & 0xff) / 255f;
-        return f;
     }
 }

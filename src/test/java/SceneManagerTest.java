@@ -1,4 +1,4 @@
-import com.physmo.garnettoolkit.SceneManager;
+import com.physmo.garnettoolkit.scene.SceneManager;
 import org.junit.jupiter.api.Test;
 import support.InventorySubScene;
 import support.MainGameScene;

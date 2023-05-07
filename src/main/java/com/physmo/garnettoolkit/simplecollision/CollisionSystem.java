@@ -2,7 +2,6 @@ package com.physmo.garnettoolkit.simplecollision;
 
 
 import com.physmo.garnettoolkit.GameObject;
-import com.physmo.garnettoolkit.GameObjectBucketGrid;
 import com.physmo.garnettoolkit.Rect;
 import com.physmo.garnettoolkit.StringIdBroker;
 import com.physmo.garnettoolkit.Vector3;
@@ -249,6 +248,8 @@ public class CollisionSystem extends GameObject {
         for (RelativeObject nearObject : nearObjects) {
             nearObject.thisObject.proximityCallback(nearObject);
         }
+
+        nearObjects.clear(); // Not clearing this results in a memory leak?
 
         return count;
     }
