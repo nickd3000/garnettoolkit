@@ -249,6 +249,8 @@ public class CollisionSystem extends GameObject {
             nearObject.thisObject.proximityCallback(nearObject);
         }
 
+        nearObjects.clear(); // Not clearing this results in a memory leak?
+
         return count;
     }
 
