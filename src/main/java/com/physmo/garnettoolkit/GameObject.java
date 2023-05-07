@@ -11,12 +11,11 @@ import java.util.Set;
  */
 public class GameObject {
 
-    protected Vector3 transform = new Vector3(0, 0, 0);
-    String name;
     protected final List<Component> components = new ArrayList<>();
     private final PointInt position = new PointInt();
+    protected Vector3 transform = new Vector3(0, 0, 0);
     protected Context context;
-
+    String name;
     Set<Integer> tags = new HashSet<>();
     boolean active = true;
     boolean visible = true;

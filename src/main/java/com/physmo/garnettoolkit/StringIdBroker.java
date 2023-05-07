@@ -12,8 +12,8 @@ public enum StringIdBroker {
 
     INSTANCE;
 
-    private int nextId = 1;
     private final Map<String, Integer> idMap;
+    private int nextId = 1;
 
     StringIdBroker() {
         idMap = new HashMap<>();

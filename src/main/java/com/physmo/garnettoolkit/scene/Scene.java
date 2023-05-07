@@ -9,8 +9,8 @@ import com.physmo.garnettoolkit.Context;
  */
 public abstract class Scene {
 
-    protected Context context = new Context();
     private final String name;
+    protected Context context = new Context();
     private boolean initCalled = false;
 
     public Scene(String name) {

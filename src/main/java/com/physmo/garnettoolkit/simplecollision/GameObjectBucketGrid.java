@@ -10,6 +10,8 @@ public class GameObjectBucketGrid {
     int cellWidth;
     int cellHeight;
     int maxObjectsPerCell = 10;
+    int shiftX = 100;
+    int shiftY = 100;
 
     public GameObjectBucketGrid(int cellWidth, int cellHeight) {
         this.cellWidth = cellWidth;
@@ -48,9 +50,6 @@ public class GameObjectBucketGrid {
         objects.get(num).add(o);
     }
 
-    int shiftX = 100;
-    int shiftY = 100;
-
     public int encoder(int x, int y) {
         if (x < -shiftX) x = -shiftX;
         if (y < -shiftY) y = -shiftY;
@@ -76,7 +75,6 @@ public class GameObjectBucketGrid {
         }
         return activeCells;
     }
-
 
 
     /**
