@@ -6,21 +6,21 @@ import static com.physmo.garnettoolkit.Utils.lerp;
  * A color supplier used to blend two colors.
  */
 public class ColorSupplierLinear implements ColorSupplier {
-    Color c1;
-    Color c2;
+    float[] c1;
+    float[] c2;
 
-    public ColorSupplierLinear(Color c1, Color c2) {
-        this.c1 = c1;
-        this.c2 = c2;
+    public ColorSupplierLinear(int c1, int c2) {
+        this.c1 = ColorUtils.rgbaToFloats(c1);
+        this.c2 = ColorUtils.rgbaToFloats(c2);
     }
 
     @Override
-    public Color getColor(double t) {
-        return new Color(lerp(c1.r, c2.r, (float) t),
-                lerp(c1.g, c2.g, (float) t),
-                lerp(c1.b, c2.b, (float) t),
-                lerp(c1.a, c2.a, (float) t));
+    public int getColor(double t) {
+        return ColorUtils.asRGBA(
+                lerp(c1[0], c2[0], (float) t),
+                lerp(c1[1], c2[1], (float) t),
+                lerp(c1[2], c2[2], (float) t),
+                lerp(c1[3], c2[3], (float) t));
     }
-
 
 }

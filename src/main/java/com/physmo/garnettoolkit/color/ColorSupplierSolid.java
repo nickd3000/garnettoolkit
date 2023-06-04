@@ -1,14 +1,14 @@
 package com.physmo.garnettoolkit.color;
 
 public class ColorSupplierSolid implements ColorSupplier {
-    Color color;
+    int color;
 
-    public ColorSupplierSolid(Color color) {
+    public ColorSupplierSolid(int color) {
         this.color = color;
     }
 
     @Override
-    public Color getColor(double t) {
+    public int getColor(double t) {
         return color;
     }
 }
