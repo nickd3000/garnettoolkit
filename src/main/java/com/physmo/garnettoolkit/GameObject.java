@@ -98,8 +98,11 @@ public class GameObject {
 
     public void _tick(double t) {
         this.tick(t);
-        for (Component c : components) {
-            c.tick(t);
+//        for (Component c : components) {
+//            c.tick(t);
+//        }
+        for (int i = 0; i < components.size(); i++) {
+            components.get(i).tick(t);
         }
     }
 
@@ -108,8 +111,11 @@ public class GameObject {
 
     public void _draw() {
         this.draw();
-        for (Component c : components) {
-            c.draw();
+//        for (Component c : components) {
+//            c.draw();
+//        }
+        for (int i = 0; i < components.size(); i++) {
+            components.get(i).draw();
         }
     }
 

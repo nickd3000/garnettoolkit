@@ -12,4 +12,16 @@ public class Utils {
         return (v1 + span * pos);
     }
 
+
+    public static double remapRange(double value, double inMin, double inMax, double outMin, double outMax) {
+        if (outMax - outMin == 0) return 0;
+        value = (value - inMin) / ((inMax - inMin) / (outMax - outMin));
+        return value + outMin;
+    }
+
+    public static float remapRange(float value, float inMin, float inMax, float outMin, float outMax) {
+        if (outMax - outMin == 0) return 0;
+        value = (value - inMin) / ((inMax - inMin) / (outMax - outMin));
+        return value + outMin;
+    }
 }
