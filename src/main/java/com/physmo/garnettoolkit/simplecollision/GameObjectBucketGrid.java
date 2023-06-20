@@ -96,10 +96,11 @@ public class GameObjectBucketGrid {
     public List<Object> getSurroundingObjects(int cellX, int cellY, int tileRadius) {
         int cx = cellX;
         int cy = cellY;
+        int index;
         List<Object> list = new ArrayList<>();
         for (int y = cy - tileRadius; y <= cy + tileRadius; y++) {
             for (int x = cx - tileRadius; x <= cx + tileRadius; x++) {
-                int index = encoder(x, y);
+                index = encoder(x, y);
                 if (objects.containsKey(index)) {
                     list.addAll(objects.get(index));
                 }
