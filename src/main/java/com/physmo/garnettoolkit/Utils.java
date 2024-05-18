@@ -24,4 +24,13 @@ public class Utils {
         value = (value - inMin) / ((inMax - inMin) / (outMax - outMin));
         return value + outMin;
     }
+
+    /**
+     * Convert a numeric value to a brief string, retaining only 2 digits after the decimal place.
+     *
+     * @return
+     */
+    public static String numberToString(double val) {
+        return String.format("%.2f", val);
+    }
 }

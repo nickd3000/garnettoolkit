@@ -1,8 +1,11 @@
 package com.physmo.garnettoolkit;
 
+/**
+ * NOTE: Typically methods will not return a new vector.
+ */
 public class Vector3 {
 
-    static Vector3 ZERO_VECTOR = new Vector3(0, 0, 0);
+    static final Vector3 ZERO_VECTOR = new Vector3(0, 0, 0);
     public double x, y, z;
 
     public Vector3() {
@@ -26,67 +29,76 @@ public class Vector3 {
         return new Vector3(Math.sin(angle) * magnitude, Math.cos(angle) * magnitude, 0);
     }
 
-    public void set(double x, double y, double z) {
+    public Vector3 set(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        return this;
     }
 
-    public void set(Vector3 other) {
+    public Vector3 set(Vector3 other) {
         this.x = other.x;
         this.y = other.y;
         this.z = other.z;
+        return this;
     }
 
-    public Vector3 add(Vector3 other) {
-        Vector3 newVec = new Vector3(this);
-        newVec.x += other.x;
-        newVec.y += other.y;
-        newVec.z += other.z;
-        return newVec;
-    }
 
     public Vector3 getDirectionTo(Vector3 other) {
-        Vector3 v = this.sub(other);
+        Vector3 v = new Vector3(this);
+        v.sub(other);
         v.normalise();
         return v;
     }
 
-    // 'i' suffix means do the operation "in-place", i.e. update the object.
-    public void addi(Vector3 other) {
+
+    public Vector3 translate(Vector3 other) {
         x += other.x;
         y += other.y;
         z += other.z;
+        return this;
+    }
+
+    public Vector3 addScaled(Vector3 other, double scale) {
+        x += other.x * scale;
+        y += other.y * scale;
+        z += other.z * scale;
+        return this;
     }
 
     public Vector3 scale(double v) {
-        Vector3 newVec = new Vector3(this);
-        newVec.x *= v;
-        newVec.y *= v;
-        newVec.z *= v;
-        return newVec;
+        x *= v;
+        y *= v;
+        z *= v;
+        return this;
     }
 
     public Vector3 sub(Vector3 other) {
-        Vector3 newVec = new Vector3(this);
-        newVec.x -= other.x;
-        newVec.y -= other.y;
-        newVec.z -= other.z;
-        return newVec;
+        x -= other.x;
+        y -= other.y;
+        z -= other.z;
+        return this;
     }
 
     @Override
     public String toString() {
-        return String.format("Vector3{x=%.2f, y=%.2f, z=%.2f}", x, y, z);
+        return String.format("[x:%.2f, y:%.2f, z:%.2f]", x, y, z);
     }
 
-    public void normalise() {
+    public Vector3 normalise() {
         double l = Math.sqrt((x * x) + (y * y) + (z * z));
         this.x /= l;
         this.y /= l;
         this.z /= l;
+        return this;
     }
 
+    /**
+     * Return the distance from this point vector to another point vector
+     *
+     * @param other The other position
+     * @return Distance between two vectors.
+     */
     public double distance(Vector3 other) {
         double x = this.x - other.x;
         double y = this.y - other.y;
@@ -98,5 +110,14 @@ public class Vector3 {
         double xx = this.x - x;
         double yy = this.y - y;
         return Math.sqrt((xx * xx) + (yy * yy));
+    }
+
+    public double length() {
+        return Math.sqrt((x * x) + (y * y) + (z * z));
+    }
+
+    public void setFromAngle(double angle, double magnitude) {
+        this.x = Math.cos(angle) * magnitude;
+        this.y = Math.sin(angle) * magnitude;
     }
 }
