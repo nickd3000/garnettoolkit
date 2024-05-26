@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * A Context is a container for any objects required for a game or scene.
  * Objects can be retrieved by class type or by tag.
- * GameObjects are given special treatment and can be ticked and drawn as a batch.
+ * GameObject derived objects are given special treatment and can be ticked and drawn as a batch.
  *
  * <p>
  * Newly added GameObjects will be initialised just before they are ticked for the first time.
@@ -30,7 +30,7 @@ public class Context {
      */
     public void add(Object object) {
 
-        // Game objects get the context injected into them.
+        // Game objects have this context injected.
         if (object instanceof GameObject) {
             ((GameObject) object).injectContext(this);
         }
@@ -155,6 +155,7 @@ public class Context {
                 if (!((GameObject) object).isDestroy()) {
                     keep.add(object);
                 } else {
+                    System.out.println("removing object");
                     //System.out.println("skipping");
                 }
             } else {

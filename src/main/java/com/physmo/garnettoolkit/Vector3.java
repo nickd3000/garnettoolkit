@@ -59,6 +59,12 @@ public class Vector3 {
         return this;
     }
 
+    /**
+     * Add a vector multiplied by scale
+     * @param other The vector you want to scale and add to the subject
+     * @param scale The scale value
+     * @return self
+     */
     public Vector3 addScaled(Vector3 other, double scale) {
         x += other.x * scale;
         y += other.y * scale;
