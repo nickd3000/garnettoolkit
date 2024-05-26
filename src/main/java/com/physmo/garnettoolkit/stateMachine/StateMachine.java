@@ -93,7 +93,7 @@ public class StateMachine {
         }
     }
 
-    // TODO: should return an optional?
+
     private Optional<Transition> findTransition(String fromState, String toState) {
         for (Transition transition : transitions) {
             if (transition.fromState.compareTo(fromState) != 0 && transition.fromState.compareTo(ANY_STATE) != 0)

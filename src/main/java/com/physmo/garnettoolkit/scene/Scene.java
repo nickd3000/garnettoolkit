@@ -3,8 +3,8 @@ package com.physmo.garnettoolkit.scene;
 import com.physmo.garnettoolkit.Context;
 
 /**
- * A scene can be thought of as a game state
- * Each scene has a Context that contains game objects
+ * A scene can be thought of as a game state.
+ * Each scene contains a Context that can contain GameObjects and other objects.
  * All game objects in the context get ticked and drawn.
  */
 public abstract class Scene {

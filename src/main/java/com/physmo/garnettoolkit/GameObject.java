@@ -12,8 +12,11 @@ import java.util.Set;
 public class GameObject {
 
     protected final List<Component> components = new ArrayList<>();
-    private final PointInt position = new PointInt();
+    private final PointInt position = new PointInt(0, 0, 0);
+
     protected Vector3 transform = new Vector3(0, 0, 0);
+    protected Vector3 velocity = new Vector3(0, 0, 0);
+
     protected Context context;
     String name;
     Set<Integer> tags = new HashSet<>();
@@ -52,6 +55,14 @@ public class GameObject {
         this.transform = transform;
     }
 
+    public Vector3 getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Vector3 velocity) {
+        this.velocity = velocity;
+    }
+
     public <T> T getComponent(Class<T> clazz) {
         for (Object component : components) {
             if (component.getClass() == clazz) return (T) component;
@@ -59,6 +70,11 @@ public class GameObject {
         return null;
     }
 
+    /**
+     * Get the integer based position for this game object.
+     *
+     * @return
+     */
     public PointInt getPosition() {
         return position;
     }
@@ -96,13 +112,14 @@ public class GameObject {
     public void init() {
     }
 
+
     public void _tick(double t) {
         this.tick(t);
 //        for (Component c : components) {
 //            c.tick(t);
 //        }
-        for (int i = 0; i < components.size(); i++) {
-            components.get(i).tick(t);
+        for (Component component : components) {
+            component.tick(t);
         }
     }
 
@@ -111,23 +128,22 @@ public class GameObject {
 
     public void _draw() {
         this.draw();
-//        for (Component c : components) {
-//            c.draw();
-//        }
-        for (int i = 0; i < components.size(); i++) {
-            components.get(i).draw();
+        for (Component component : components) {
+            component.draw();
         }
     }
 
     public void draw() {
     }
 
-    public void setVisible(boolean b) {
+    public GameObject setVisible(boolean b) {
         visible = b;
+        return this;
     }
 
-    public void addTag(String tag) {
+    public GameObject addTag(String tag) {
         tags.add(StringIdBroker.INSTANCE.getId(tag));
+        return this;
     }
 
     public Set<Integer> getTags() {
@@ -146,7 +162,8 @@ public class GameObject {
         return active;
     }
 
-    public void setActive(boolean b) {
+    public GameObject setActive(boolean b) {
         active = b;
+        return this;
     }
 }

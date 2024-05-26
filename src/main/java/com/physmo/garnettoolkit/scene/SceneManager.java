@@ -2,14 +2,21 @@ package com.physmo.garnettoolkit.scene;
 
 import com.physmo.garnettoolkit.Context;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+/**
+ * The single global scene manager.
+ */
 public class SceneManager {
 
     private static final List<String> subScenePushRequests;
     private static final List<String> subScenePopRequests;
     private static final Map<String, Scene> scenes;
-    private static Context sharedContext = null;
+    private static Context sharedContext;
     private static Scene activeScene;
     private static Scene targetScene;
     private static List<Scene> activeSubScenes;
@@ -23,9 +30,18 @@ public class SceneManager {
     }
 
     private SceneManager() {
-
+        // Don't allow user creation of a scene manager.
     }
 
+    /**
+     * Retrieve the shared context for the game or application.
+     * If the shared context is null, a new instance is created and returned.
+     * <p>
+     * NOTE: The shared context is useful for data and objects that are shared
+     * between scenes, or want to persist over the lifetime of the game.
+     *
+     * @return The shared context.
+     */
     public static Context getSharedContext() {
         if (sharedContext == null) {
             sharedContext = new Context();
@@ -34,21 +50,30 @@ public class SceneManager {
         return sharedContext;
     }
 
+    /**
+     * Updates and ticks the scenes based on the passed delta time.
+     * Ticks either the main scene or the last active subscene.
+     *
+     * @param delta Time since the last tick.
+     */
     public static void tick(double delta) {
         update();
 
         sharedContext.tick(delta);
 
         // Only tick main scene if there are no active sub scenes.
-        if (activeSubScenes.size() == 0 && activeScene.isInitCalled()) activeScene._tick(delta);
+        if (activeSubScenes.isEmpty() && activeScene.isInitCalled()) activeScene._tick(delta);
 
         // Find the last active subscene and tick it.
-        if (activeSubScenes.size() > 0)
+        if (!activeSubScenes.isEmpty())
             activeSubScenes.get(activeSubScenes.size() - 1)._tick(delta);
 
     }
 
-    // called after gamestate ticks so safe to add/remove/change scenes here.
+    /**
+     * Handles scene management operations after game state ticks.
+     * This ensures safe addition, removal, or changes to scenes.
+     */
     public static void update() {
 
         handleSceneChange();
@@ -56,6 +81,10 @@ public class SceneManager {
         handleSubscenePush();
     }
 
+    /**
+     * Manages the transition between the current and target scenes.
+     * Initializes and activates the target scene if set.
+     */
     public static void handleSceneChange() {
         if (targetScene != null) {
             targetScene._init();
@@ -70,6 +99,10 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Processes the requests to push subscenes to the active list.
+     * If a subscene is pushed, it's initialized and activated.
+     */
     public static void handleSubscenePush() {
         if (subScenePushRequests.isEmpty()) return;
 
@@ -89,6 +122,11 @@ public class SceneManager {
         subScenePushRequests.clear();
     }
 
+
+    /**
+     * Processes the requests to pop subscenes from the active list.
+     * Deactivates and removes subscenes that are requested to be popped.
+     */
     public static void handleSubscenePop() {
         if (subScenePopRequests.isEmpty()) return;
 
@@ -113,6 +151,10 @@ public class SceneManager {
 
     }
 
+    /**
+     * Renders the active scene and all the active subscenes.
+     * Uses the shared context for drawing.
+     */
     public static void draw() {
         sharedContext.draw();
 
@@ -125,14 +167,20 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Retrieves the currently active scene.
+     *
+     * @return An Optional containing the active scene if present.
+     */
     public static Optional<Scene> getActiveScene() {
         return Optional.ofNullable(activeScene);
     }
 
     /**
-     * Request active scene change.
+     * Sets the scene with the given name as the active scene.
+     * Throws an exception if the scene name is not found.
      *
-     * @param name
+     * @param name Name of the scene to be set as active.
      */
     public static void setActiveScene(String name) {
         throwExceptionIfSceneNameNotFound(name);
@@ -148,6 +196,12 @@ public class SceneManager {
         System.out.println("Scene name not found: " + name);
     }
 
+    /**
+     * Throws a runtime exception if the provided scene name isn't found in the list.
+     *
+     * @param name Name of the scene to be checked.
+     * @throws RuntimeException if the scene name is not found.
+     */
     public static void throwExceptionIfSceneNameNotFound(String name) {
         for (String str : scenes.keySet()) {
             if (str.equalsIgnoreCase(name)) return;
@@ -156,9 +210,10 @@ public class SceneManager {
     }
 
     /**
-     * Add a scene but do not make active.
+     * Adds a new scene to the scene manager.
+     * If no active scene is set, the provided scene is set as the target scene.
      *
-     * @param scene
+     * @param scene The scene to be added.
      */
     public static void addScene(Scene scene) {
         System.out.println("Adding scene");
@@ -168,14 +223,22 @@ public class SceneManager {
     }
 
     /**
-     * Push an already added scene to the active subscene list.
+     * Requests to push a subscene with the given name to the active list.
+     * The actual push happens in the update method.
      *
-     * @param name
+     * @param name Name of the subscene to be pushed.
      */
     public static void pushSubScene(String name) {
         subScenePushRequests.add(name);
     }
 
+    /**
+     * Requests to pop a subscene with the given name from the active list.
+     * The actual pop happens in the update method.
+     * Throws an exception if the scene name is not found.
+     *
+     * @param name Name of the subscene to be popped.
+     */
     public static void popSubScene(String name) {
         subScenePopRequests.add(name);
 
